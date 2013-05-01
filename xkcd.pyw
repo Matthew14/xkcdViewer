@@ -1,4 +1,10 @@
-import urllib, re, wx, cStringIO, random, webbrowser, os
+import wx
+import urllib
+import re
+import cStringIO
+import random
+import webbrowser
+import os
 from bs4 import BeautifulSoup
 
 class myFrame(wx.Frame):
@@ -8,6 +14,14 @@ class myFrame(wx.Frame):
       wx.Frame.__init__(self, parent, id, 'XKCD', size = (800, 600))
       self.UIinit()
       self.GoToComic(self.currentComic)
+      self.Bind(wx.EVT_CHAR_HOOK, self.onKey)
+
+   def onKey(self, event):
+      key = event.GetKeyCode()
+      if key == wx.WXK_LEFT:
+         self.prev(event)
+      elif key == wx.WXK_RIGHT:
+         self.next(event)
 
    def getNocomics(self):
       self.url = "http://www.xkcd.com/"
@@ -69,7 +83,11 @@ class myFrame(wx.Frame):
       webbrowser.open(self.url + str(self.currentComic))
 
    def GoToComicButton(self, event):
-      self.GoToComic(int(self.numberCtrl.GetValue()))
+      try:
+         comicNo  = int(self.numberCtrl.GetValue())
+         self.GoToComic(comicNo)
+      except ValueError as e:
+         pass
 
    def randomize(self, event):
       self.GoToComic(random.randint(1, self.noComics))
