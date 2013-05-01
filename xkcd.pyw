@@ -87,7 +87,6 @@ class myFrame(wx.Frame):
       self.numberCtrl.SetValue(str(number))
       try:
          content = urllib.urlopen(url).read()
-
       except Exception:
          print ("Cannot retrieve data. Internet working?")
          exit(1)
@@ -100,21 +99,19 @@ class myFrame(wx.Frame):
       self.title = str(soup.find('div', id='ctitle').string) #.string is the text in the tags
       self.SetTitle(self.title)
 
-      print (img['src'])
-      imgHandle = urllib.urlopen(img['src'])
-
       self.currentComic = int(str(soup.find('a', rel="prev")['href']).strip('/')) + 1
+      imgHandle = urllib.urlopen(img['src'])
       self.DisplayImage(imgHandle)
 
    def DisplayImage(self, imgHandle):
       if self.image != None:
-      	self.image.Destroy()
+         self.image.Destroy()
       with open("tmpImage.png", "wb") as img:
          img.write(imgHandle.read())
       comic = 'tmpImage.png'
       comic  = wx.Image(str(comic), wx.BITMAP_TYPE_ANY )
       comic = comic.ConvertToBitmap()
-      self.image = wx.StaticBitmap(self, -1, comic, (0, 40), (comic.GetWidth(), comic.GetHeight()))
+      self.image = wx.StaticBitmap(self.panel, -1, comic, (0, 40), (comic.GetWidth(), comic.GetHeight()))
       os.remove('tmpImage.png')
 
 if __name__ == '__main__':
