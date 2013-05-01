@@ -1,4 +1,4 @@
-import urllib, re, wx, cStringIO, random, webbrowser
+import urllib, re, wx, cStringIO, random, webbrowser, os
 from bs4 import BeautifulSoup
 
 class myFrame(wx.Frame):
@@ -115,6 +115,7 @@ class myFrame(wx.Frame):
       comic  = wx.Image(str(comic), wx.BITMAP_TYPE_ANY )
       comic = comic.ConvertToBitmap()
       self.image = wx.StaticBitmap(self, -1, comic, (0, 40), (comic.GetWidth(), comic.GetHeight()))
+      os.remove('tmpImage.png')
 
 if __name__ == '__main__':
    app = wx.PySimpleApp()
